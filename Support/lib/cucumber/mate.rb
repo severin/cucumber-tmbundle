@@ -7,7 +7,10 @@ if ENV['TM_PROJECT_DIRECTORY']
   bundler_gemfile = File.join(ENV['TM_PROJECT_DIRECTORY'], 'Gemfile')
   if File.exists?(bundler_gemfile)
     bundle_path = (File.read(bundler_gemfile) =~ (/bundle_path[ (]+['"](.*?)['"]/) && $1) || ".bundle"
-    require File.join(ENV['TM_PROJECT_DIRECTORY'], bundle_path, "environment")
+    env_file = File.join(ENV['TM_PROJECT_DIRECTORY'], bundle_path, "environment")
+    if File.exists?(env_file)
+      require File.join(ENV['TM_PROJECT_DIRECTORY'], bundle_path, "environment")
+    end
   elsif File.directory?(rspec_rails_plugin)
     $LOAD_PATH.unshift(rspec_rails_plugin)
   elsif File.directory?(rspec_merb_gem)
